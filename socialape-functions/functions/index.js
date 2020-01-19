@@ -3,7 +3,11 @@ const app = require('express')();
 const {
     getPosts,
     postPost,
-    getPost
+    getPost,
+    commentOnPost,
+    unlikePost,
+    likePost,
+    deletePost
 } = require('./handlers/posts');
 const {
     signup,
@@ -18,9 +22,9 @@ const FBAuth = require('./utils/fbAuth');
 app.get('/posts', getPosts);
 app.post('/post', FBAuth, postPost);
 app.get('/post/:postId', getPost);
-// TODO: delete post
-// TODO: like post
-// TODO: unlike post
+app.delete('/post/:postId', FBAuth, deletePost);
+app.get('/post/:postId/like', FBAuth, likePost);
+app.get('/post/:postId/unlike', FBAuth, unlikePost);
 app.post('/post/:postId/comment', FBAuth, commentOnPost);
 
 // Users route
