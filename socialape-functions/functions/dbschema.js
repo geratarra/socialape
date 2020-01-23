@@ -27,6 +27,16 @@ const db = {
             body: 'This is a comment',
             createdAt: '2020-01-15T00:16:18.265Z'
         }
+    ],
+    notifications: [
+        {
+            recipient: 'user',
+            sender: 'john',
+            read: 'true | false',
+            postId: 'kdjsfgdksuufhgkdsufky',
+            type: 'like | comment',
+            createdAt: '2020-03-15T10:59:52.798Z'
+        }
     ]
 };
 

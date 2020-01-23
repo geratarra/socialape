@@ -23,11 +23,9 @@ exports.login = (req, res) => {
         })
         .catch(err => {
             console.error(err);
-            if (err.code === 'auth/wrong-password') {
-                return res.status(403).json({ general: 'Wrong credentials, please try again' });
-            } else {
-                return res.status(500).json({ error: err.code });
-            }
+            // auth/wrong-password
+            // auth/user-not-found
+            return res.status(403).json({ general: 'Wrong credentials, please try again' });
         });
 };
 
@@ -77,7 +75,7 @@ exports.signup = (req, res) => {
                         if (err.code === 'auth/email-already-in-use') {
                             return res.status(400).json({ email: 'Email is already in use' });
                         } else {
-                            return res.status(500).json({ error: err.code });
+                            return res.status(500).json({ general: 'Something went wrong, please try again' });
                         }
                     });
             }
@@ -87,7 +85,7 @@ exports.signup = (req, res) => {
 // Get own user details
 exports.getAuthenticatedUser = (req, res) => {
     console.log('Route: /user getAuthenticatedUser');
-    
+
     let userData = {};
     db.doc(`/users/${req.user.handle}`).get()
         .then(doc => {
@@ -97,9 +95,20 @@ exports.getAuthenticatedUser = (req, res) => {
             }
         })
         .then(data => {
-            userData.likes =[];
+            userData.likes = [];
             data.forEach(doc => {
                 userData.likes.push(doc.data());
+            });
+            return db.collection('notifications').where('recipient', '==', req.user.handle)
+                .orderBy('createdAt', 'desc').limit(10).get();
+        })
+        .then(data => {
+            userData.notifications = [];
+            data.forEach(doc => {
+                userData.notifications.push({
+                    ...doc.data(),
+                    notificationId: doc.id
+                });
             });
             return res.json(userData);
         })
@@ -128,7 +137,7 @@ exports.addUserDetails = (req, res) => {
 // Profile image upload handler
 exports.uploadImage = (req, res) => {
     console.log('Route: /user/image');
-    
+
     const BusBoy = require('busboy');
     const path = require('path');
     const os = require('os');
@@ -146,10 +155,10 @@ exports.uploadImage = (req, res) => {
         if (mimetype !== 'image/jpeg' && mimetype !== 'image/png') {
             return res.status(400).json({ error: 'Wrong file type submitted' });
         }
-        
+
         const splitFileName = fileName.split('.');
         const imageExtension = splitFileName[splitFileName.length - 1];
-        imageFileName = `${Math.round(Math.random()*1000000000)}.${imageExtension}`;
+        imageFileName = `${Math.round(Math.random() * 1000000000)}.${imageExtension}`;
         const filePath = path.join(os.tmpdir(), imageFileName);
         imageToBeUploaded = { filePath, mimetype };
         file.pipe(fs.createWriteStream(filePath));
@@ -164,19 +173,64 @@ exports.uploadImage = (req, res) => {
                 }
             }
         })
-        .then(() => {
-            const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/${imageFileName}?alt=media`;
-            return db.doc(`/users/${req.user.handle}`)
-                .update({ imageUrl });
+            .then(() => {
+                const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/${imageFileName}?alt=media`;
+                return db.doc(`/users/${req.user.handle}`)
+                    .update({ imageUrl });
+            })
+            .then(() => {
+                return res.json({ message: 'Image uploaded successfully' });
+            })
+            .catch(err => {
+                console.error(err);
+                return res.status(500).json({ error: err.code });
+            });
+    });
+
+    busBoy.end(req.rawBody);
+};
+
+// Get any user's details
+exports.getUserDetails = (req, res) => {
+    let userData = {};
+    db.doc(`/users/${req.params.handle}`).get()
+        .then(doc => {
+            if (doc.exists) {
+                userData.user = doc.data();
+                return db.collection('posts')
+                    .where('userHandle', '==', req.params.handle)
+                    .orderBy('createdAt', 'desc')
+                    .get();
+            } else {
+                return res.status(404).json({ error: 'User not found' });
+            }
         })
-        .then(() => {
-            return res.json({ message: 'Image uploaded successfully' });
+        .then(data => {
+            userData.posts = [];
+            data.forEach(doc => {
+                userData.posts.push({
+                    ...doc.data(),
+                    postId: doc.id
+                });
+            });
+            return res.json(userData);
         })
         .catch(err => {
             console.error(err);
             return res.status(500).json({ error: err.code });
         });
-    });
+};
 
-    busBoy.end(req.rawBody);
+exports.markNotificationsRead = (req, res) => {
+    let batch = db.batch();
+    req.body.forEach(notificationId => {
+        const notification = db.doc(`/notifications/${notificationId}`);
+        batch.update(notification, { read: true });
+    });
+    batch.commit()
+        .then(() => { return res.json({ message: 'Notifications marked read' }); })
+        .catch(err => {
+            console.error(err);
+            return res.status(500).json({ error: err.code });
+        });
 };

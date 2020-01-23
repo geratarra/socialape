@@ -81,7 +81,7 @@ exports.getPost = (req, res) => {
 
 // Add comment on post
 exports.commentOnPost = (req, res) => {
-    if (req.body.body.trim() === '') return res.status(400).json({ error: 'Must not be empty' });
+    if (req.body.body.trim() === '') return res.status(400).json({ comment: 'Must not be empty' });
 
     const newComment = {
         body: req.body.body,
@@ -114,7 +114,7 @@ exports.likePost = (req, res) => {
     const likeDocument = db
         .collection('/likes')
         .where('userHandle', '==', req.user.handle)
-        .where('postId', '==', req.params.postId).limit(1);
+        .where('postId', '==', req.params.postId).limit(1);        
 
     const postDocument = db.doc(`/posts/${req.params.postId}`);
 
