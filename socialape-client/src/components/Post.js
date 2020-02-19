@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 import PropTypes from 'prop-types';
 import TooltipButton from '../components/TooltipButton';
+import DeletePost from '../components/DeletePost';
 
 // MUI stuff
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -24,19 +25,20 @@ const Link = require("react-router-dom").Link;
 const styles = {
     card: {
         display: 'flex',
-        marginBottom: 20,
+        marginBottom: 20
     },
     image: {
         minWidth: 200
     },
     content: {
         padding: 25,
-        objectFit: 'cover'
+        objectFit: 'cover',
+        width: '100%'
     }
 };
 
 const Post = (props) => {
-    const { classes, post: { body, createdAt, userImage, userHandle, likeCount, commentsCount }, user: { authenticated } } = props;
+    const { classes, post: { body, createdAt, userImage, userHandle, likeCount, commentsCount, postId }, user: { authenticated, credentials: { handle } } } = props;
     dayjs.extend(relativeTime);
 
     const likedPost = () => {
@@ -73,6 +75,10 @@ const Post = (props) => {
                 )
         );
 
+    const deleteButton = authenticated && userHandle === handle ? (
+        <DeletePost postId={postId}></DeletePost>
+    ) : null;
+
     return (
         <Card className={classes.card}>
             <CardMedia
@@ -81,6 +87,7 @@ const Post = (props) => {
                 className={classes.image} />
             <CardContent className={classes.content}>
                 <Typography component={Link} to={`/users/${userHandle}`} variant='h5' color='primary'>{userHandle}</Typography>
+                {deleteButton}
                 <Typography variant='body2' color='textSecondary'>{dayjs(createdAt).fromNow()}</Typography>
                 <Typography variant='body1'>{body}</Typography>
                 {likeButton}
