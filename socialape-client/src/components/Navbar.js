@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TooltipButton from './TooltipButton';
+import CreatePost from './CreatePost';
 
 // MaterialUI stuff
 import AppBar from '@material-ui/core/AppBar';
@@ -9,7 +10,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 
 // MUI icons
-import AddIcon from '@material-ui/icons/Add';
 import Home from '@material-ui/icons/Home';
 import Notifications from '@material-ui/icons/Notifications';
 
@@ -23,9 +23,7 @@ const Navbar = (props) => {
             <Toolbar className='nav-container'>
                 {authenticated ? (
                     <Fragment>
-                        <TooltipButton tip='Post'>
-                            <AddIcon></AddIcon>
-                        </TooltipButton>
+                        <CreatePost></CreatePost>
                         <Link to='/'>
                             <TooltipButton tip='Home'>
                                 <Home></Home>

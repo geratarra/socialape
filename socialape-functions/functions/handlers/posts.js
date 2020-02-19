@@ -25,6 +25,10 @@ exports.getPosts = (req, res) => {
 exports.postPost = (req, res) => {
     console.log('Route: /posts\nMethod: post');
 
+    if (req.body.body.trim() === '') {
+        return res.status(400).json({ body: 'Body must not be empty' });
+    }
+
     const newPost = {
         body: req.body.body,
         userHandle: req.user.handle,
@@ -114,7 +118,7 @@ exports.likePost = (req, res) => {
     const likeDocument = db
         .collection('/likes')
         .where('userHandle', '==', req.user.handle)
-        .where('postId', '==', req.params.postId).limit(1);        
+        .where('postId', '==', req.params.postId).limit(1);
 
     const postDocument = db.doc(`/posts/${req.params.postId}`);
 
@@ -181,7 +185,7 @@ exports.unlikePost = (req, res) => {
                 return res.status(400).json({ error: 'Post not liked ' });
             } else {
                 return db
-                    .doc(`/likes/${data.docs[0] .id}`)
+                    .doc(`/likes/${data.docs[0].id}`)
                     .delete()
                     .then(() => {
                         postData.likeCount = postData.likeCount > 0 ? --postData.likeCount : postData.likeCount;
@@ -191,10 +195,10 @@ exports.unlikePost = (req, res) => {
                     .then(() => {
                         return res.json(postData);
                     });
-            } 
+            }
         })
         .catch(err => {
-            console.error(err );
+            console.error(err);
             return res.status(500).json({ error: err.code });
         });
 }
