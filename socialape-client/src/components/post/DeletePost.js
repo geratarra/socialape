@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
-import TooltipButton from '../components/TooltipButton';
+import TooltipButton from './TooltipButton';
 
 // MUI stuff
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -13,7 +13,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
 
 import { connect } from 'react-redux';
-import { deletePost } from '../redux/actions/dataActions';
+import { deletePost } from '../../redux/actions/dataActions';
 
 const styles = {
     deleteButton: {

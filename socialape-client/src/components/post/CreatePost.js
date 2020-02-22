@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useForm } from '../utils/customHooks';
+import { useForm } from '../../utils/customHooks';
 import TooltipButton from './TooltipButton';
 
 // MUI
@@ -16,7 +16,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Redux
 import { connect } from 'react-redux';
-import { createPost, clearErrors } from '../redux/actions/dataActions';
+import { createPost, clearErrors } from '../../redux/actions/dataActions';
 
 const styles =theme => ({
     ...theme.general,
@@ -67,7 +67,7 @@ const CreatePost = props => {
             <Dialog
                 open={open}
                 onClose={handleClose} fullWidth maxWidth='sm'>
-                <TooltipButton tip='Close' onClick={handleClose} btnClassName={classes.closeButton}>
+                <TooltipButton tip='Close' onClick={handleClose} tipClassName={classes.closeButton}>
                     <CloseIcon></CloseIcon>
                 </TooltipButton>
                 <DialogTitle>Create a new Post</DialogTitle>

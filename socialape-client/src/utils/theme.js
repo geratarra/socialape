@@ -40,6 +40,15 @@ export default {
             color: 'red',
             fontSize: '.8rem',
             marginTop: '10'
-        }
+        },
+        invisibleSeparator: {
+            border: 'none',
+            margin: 4
+        },
+        visibleSeparator: {
+            borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+            marginBottom: 20,
+            width: '100%'
+        },
     }
 };

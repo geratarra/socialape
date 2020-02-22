@@ -1,11 +1,11 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { useForm } from '../utils/customHooks';
-import TooltipButton from './TooltipButton';
+import { useForm } from '../../utils/customHooks';
+import TooltipButton from '../post/TooltipButton';
 
 // Redux
 import { connect } from 'react-redux';
-import { editUserDetails } from '../redux/actions/userActions';
+import { editUserDetails } from '../../redux/actions/userActions';
 
 // MUI
 import TextField from '@material-ui/core/TextField';

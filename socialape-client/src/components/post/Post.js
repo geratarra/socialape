@@ -2,8 +2,10 @@ import React from 'react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 import PropTypes from 'prop-types';
-import TooltipButton from '../components/TooltipButton';
-import DeletePost from '../components/DeletePost';
+import TooltipButton from './TooltipButton';
+import DeletePost from './DeletePost';
+import PostDialog from './PostDialog';
+import LikeButton from './LikeButton';
 
 // MUI stuff
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -14,16 +16,14 @@ import Typography from '@material-ui/core/Typography';
 
 // MUI icons
 import ChatIcon from '@material-ui/icons/Chat';
-import FavoriteIcon  from '@material-ui/icons/Favorite';
-import FavoriteBorder  from '@material-ui/icons/FavoriteBorder';
 
 import { connect } from 'react-redux';
-import { likePost, unlikePost } from '../redux/actions/dataActions';
 
 const Link = require("react-router-dom").Link;
 
 const styles = {
     card: {
+        position: 'relative',
         display: 'flex',
         marginBottom: 20
     },
@@ -38,42 +38,8 @@ const styles = {
 };
 
 const Post = (props) => {
-    const { classes, post: { body, createdAt, userImage, userHandle, likeCount, commentsCount, postId }, user: { authenticated, credentials: { handle } } } = props;
+    const { classes, post: { body, createdAt, userImage, userHandle, likeCount, commentCount, postId }, user: { authenticated, credentials: { handle } } } = props;
     dayjs.extend(relativeTime);
-
-    const likedPost = () => {
-        if (props.user.likes && props.user.likes.find(like => like.postId === props.post.postId)) {
-            return true;
-        } else { return false; }
-    };
-
-    const likePost = () => {
-        props.likePost(props.post.postId);
-    };
-
-    const unlikePost = () => {
-        props.unlikePost(props.post.postId);
-    };
-
-    const likeButton = !authenticated ?
-        (
-            <TooltipButton tip='Like'>
-                <Link to='/login'>
-                    <FavoriteBorder color='primary'></FavoriteBorder>
-                </Link>
-            </TooltipButton>
-        ) : (
-            likedPost() ?
-                (
-                    <TooltipButton tip='Undo like' onClick={unlikePost}>
-                        <FavoriteIcon color='primary'></FavoriteIcon>
-                    </TooltipButton>
-                ) : (
-                    <TooltipButton tip='Like' onClick={likePost}>
-                        <FavoriteBorder color='primary'></FavoriteBorder>
-                    </TooltipButton>
-                )
-        );
 
     const deleteButton = authenticated && userHandle === handle ? (
         <DeletePost postId={postId}></DeletePost>
@@ -90,20 +56,19 @@ const Post = (props) => {
                 {deleteButton}
                 <Typography variant='body2' color='textSecondary'>{dayjs(createdAt).fromNow()}</Typography>
                 <Typography variant='body1'>{body}</Typography>
-                {likeButton}
+                <LikeButton postId={postId}/>
                 <span>{likeCount} likes</span>
-                <TooltipButton tip='comments'>
+                <TooltipButton tip='Comments'>
                     <ChatIcon color='primary'></ChatIcon>
                 </TooltipButton>
-                <span>{commentsCount} comments</span>
+                <span>{commentCount ? commentCount : '0'} comments</span>
+                <PostDialog postId={postId} userHandle={userHandle}></PostDialog>
             </CardContent>
         </Card>
     );
 };
 
 Post.propTypes = {
-    likePost: PropTypes.func.isRequired,
-    unlikePost: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
     post: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired
@@ -113,9 +78,4 @@ const mapStateToProps = (state) => ({
     user: state.user
 });
 
-const mapActionsToProps = {
-    likePost,
-    unlikePost,
-};
-
-export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(Post));
+export default connect(mapStateToProps)(withStyles(styles)(Post));

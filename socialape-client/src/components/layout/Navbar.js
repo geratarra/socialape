@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import TooltipButton from './TooltipButton';
-import CreatePost from './CreatePost';
+import TooltipButton from '../post/TooltipButton';
+import CreatePost from '../post/CreatePost';
 
 // MaterialUI stuff
 import AppBar from '@material-ui/core/AppBar';
