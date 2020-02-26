@@ -6,7 +6,8 @@ export const useForm = () => {
         password: '',
         confirmPassword: '',
         handle: '',
-        body: ''
+        body: '',
+        commentInputField: ''
     });
     const handleInputChange = (event) => {
         event.persist();

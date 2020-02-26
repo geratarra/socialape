@@ -62,7 +62,7 @@ const Post = (props) => {
                     <ChatIcon color='primary'></ChatIcon>
                 </TooltipButton>
                 <span>{commentCount ? commentCount : '0'} comments</span>
-                <PostDialog postId={postId} userHandle={userHandle}></PostDialog>
+                <PostDialog postId={postId} userHandle={userHandle} openDialog={props.openDialog}></PostDialog>
             </CardContent>
         </Card>
     );
@@ -71,7 +71,8 @@ const Post = (props) => {
 Post.propTypes = {
     user: PropTypes.object.isRequired,
     post: PropTypes.object.isRequired,
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    openDialog: PropTypes.bool
 };
 
 const mapStateToProps = (state) => ({

@@ -1,10 +1,12 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
+
+// MUI
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import customTheme from './utils/theme';
-import jwtDecode from 'jwt-decode';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -20,6 +22,8 @@ import AuthRoute from './utils/AuthRoute';
 import home from './pages/home';
 import login from './pages/login';
 import signup from './pages/signup';
+import User from './pages/user';
+
 import axios from 'axios';
 
 const theme = createMuiTheme(customTheme);
@@ -48,6 +52,8 @@ function App() {
                             <Route exact path='/' component={home} />
                             <AuthRoute exact path='/login' component={login} />
                             <AuthRoute exact path='/signup' component={signup} />
+                            <Route exact path='/users/:handle' component={User}/>
+                            <Route exact path='/users/:handle/post/:postId' component={User}/>
                         </Switch>
                     </div>
                 </Router>

@@ -1,4 +1,4 @@
-import { SET_POSTS, STOP_LOADING_UI, LOADING_DATA, CREATE_POST, LOADING_UI, DELETE_POST, LIKE_POST, UNLIKE_POST, SET_ERRORS, CLEAR_ERRORS, SET_POST } from '../types';
+import { SUBMIT_COMMENT, SET_POSTS, STOP_LOADING_UI, LOADING_DATA, CREATE_POST, LOADING_UI, DELETE_POST, LIKE_POST, UNLIKE_POST, SET_ERRORS, CLEAR_ERRORS, SET_POST } from '../types';
 import axios from 'axios';
 
 // Get all posts
@@ -63,9 +63,7 @@ export const createPost = (newPost) => (dispatch) => {
                 type: CREATE_POST,
                 payload: res.data
             });
-            dispatch({
-                type: CLEAR_ERRORS
-            });
+            dispatch(clearErrors());
         })
         .catch(err => {
             dispatch({
@@ -93,5 +91,39 @@ export const getPost = (postId) => (dispatch) => {
         })
         .catch(err => {
             console.error(err);
+        });
+};
+
+export const submitComment = (postId, commentData) => (dispatch) => {
+    axios.post(`/post/${postId}/comment`, commentData)
+        .then(res => {
+            dispatch({
+                type: SUBMIT_COMMENT,
+                payload: res.data
+            });
+            dispatch(clearErrors());
+        })
+        .catch(err => {
+            dispatch({
+                type: SET_ERRORS,
+                payload: err.response.data
+            });
+        });
+};
+
+export const getUserData = (userHandle) => (dispatch) => {
+    dispatch({ type: LOADING_DATA });
+    axios.get(`/user/${userHandle}`)
+        .then(res => {
+            dispatch({
+                type: SET_POSTS,
+                payload: res.data.posts
+            });
+        })
+        .catch(() => {
+            dispatch({
+                type: SET_POSTS,
+                payload: null
+            });
         });
 };
