@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TooltipButton from '../post/TooltipButton';
 import CreatePost from '../post/CreatePost';
+import Notifications from './Notifications';
 
 // MaterialUI stuff
 import AppBar from '@material-ui/core/AppBar';
@@ -11,7 +12,6 @@ import Button from '@material-ui/core/Button';
 
 // MUI icons
 import Home from '@material-ui/icons/Home';
-import Notifications from '@material-ui/icons/Notifications';
 
 const Link = require("react-router-dom").Link;
 
@@ -29,23 +29,21 @@ const Navbar = (props) => {
                                 <Home></Home>
                             </TooltipButton>
                         </Link>
-                        <TooltipButton tip='Notifications'>
-                            <Notifications></Notifications>
-                        </TooltipButton>
+                        <Notifications></Notifications>
                     </Fragment>
                 ) : (
-                    <Fragment>
-                        <Button color='inherit' component={Link} to='/login'>
-                            Login
+                        <Fragment>
+                            <Button color='inherit' component={Link} to='/login'>
+                                Login
                         </Button>
-                        <Button color='inherit' component={Link} to='/'>
-                            Home
+                            <Button color='inherit' component={Link} to='/'>
+                                Home
                         </Button>
-                        <Button color='inherit' component={Link} to='/signup'>
-                            Signup
+                            <Button color='inherit' component={Link} to='/signup'>
+                                Signup
                         </Button>
-                    </Fragment>
-                )}
+                        </Fragment>
+                    )}
             </Toolbar>
         </AppBar>
     );

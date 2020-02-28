@@ -1,6 +1,5 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { useForm } from '../../utils/customHooks';
 import TooltipButton from '../post/TooltipButton';
 
 // Redux
@@ -21,7 +20,11 @@ const styles = (theme) => ({ ...theme.general, button: { float: 'right' } });
 
 const EditDetails = (props) => {
     const [open, setOpen] = useState(false);
-    const { inputs, handleInputChange } = useForm();
+    const [bio, setBio] = useState('');
+    const [website, setWebsite] = useState('');
+    const [location, setLocation] = useState('');
+
+    // const { inputs, handleInputChange } = useForm();
 
     const { classes, credentials } = props;
 
@@ -30,28 +33,47 @@ const EditDetails = (props) => {
     };
 
     const handleClose = () => {
+        if (bio === '' || website === '' || location === '') {
+            setInputs();
+        }
         setOpen(false);
     };
 
     const handleSubmit = () => {
         const userDetails = {
-            bio: inputs.bio,
-            website: inputs.website,
-            location: inputs.location
+            bio: bio,
+            website: website,
+            location: location
         };
         props.editUserDetails(userDetails);
         handleClose();
     };
 
-    const mapUserDetailsToState = useCallback(() => {
-        inputs.bio = credentials.bio ? credentials.bio : '';
-        inputs.website = credentials.website ? credentials.website : '';
-        inputs.location = credentials.location ? credentials.location : '';
-    }, []);
+    const handleInputChange = (event) => {
+        switch (event.target.name) {
+            case 'bio':
+                setBio(event.target.value);
+                break;
+            case 'location':
+                setLocation(event.target.value);
+                break;
+            case 'website':
+                setWebsite(event.target.value);
+                break;
+            default:
+                break;
+        }
+    };
+
+    const setInputs = useCallback(() => {
+        setBio(credentials.bio ? credentials.bio : '');
+        setWebsite(credentials.website ? credentials.website : '');
+        setLocation(credentials.location ? credentials.location : '');
+    }, [credentials.bio, credentials.website, credentials.location]);
 
     useEffect(() => {
-        mapUserDetailsToState();
-    }, []);
+        setInputs();
+    }, [setInputs]);
 
     return (
         <Fragment>
@@ -70,7 +92,7 @@ const EditDetails = (props) => {
                             rows='3'
                             placeholder='A short bio about yourself'
                             className={classes.textField}
-                            value={inputs.bio}
+                            value={bio}
                             onChange={handleInputChange}
                             fullWidth></TextField>
                         <TextField
@@ -79,7 +101,7 @@ const EditDetails = (props) => {
                             label='Website'
                             placeholder='Your personal/professional website'
                             className={classes.textField}
-                            value={inputs.website}
+                            value={website}
                             onChange={handleInputChange}
                             fullWidth></TextField>
                         <TextField
@@ -88,14 +110,14 @@ const EditDetails = (props) => {
                             label='Location'
                             placeholder='Where you live'
                             className={classes.textField}
-                            value={inputs.location}
+                            value={location}
                             onChange={handleInputChange}
                             fullWidth></TextField>
                     </form>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color='primary'>Cancel</Button>
-                    <Button onClick={handleSubmit} color='primary'>Save</Button>
+                    <Button onClick={handleSubmit} color='primary' disabled={bio === '' || website === '' || location === ''}>Save</Button>
                 </DialogActions>
             </Dialog>
         </Fragment>

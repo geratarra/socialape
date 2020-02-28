@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 import TooltipButton from './TooltipButton';
@@ -53,7 +53,6 @@ const styles = (theme) => ({
 const PostDialog = props => {
     const [open, setOpen] = useState(false);
     const [oldPath, setOldPath] = useState('');
-    const [newPath, setNewPath] = useState('');
     const {
         classes,
         post: {
@@ -61,24 +60,20 @@ const PostDialog = props => {
             createdAt,
             likeCount,
             commentCount,
-            postId,
+            // postId,
             userImage,
-            userHandle,
+            // userHandle,
             comments
         },
-        UI: { loading }
+        userHandle,
+        postId,
+        UI: { loading },
+        getPost
     } = props;
 
-    useEffect(() => {
-        if (props.openDialog) {
-            handleOpen();
-        }
-    }, []);
-
-    const handleOpen = () => {
+    const changeWindowLocationPath = (userHandle, postId) => {
         let oldPath = window.location.pathname;
-
-        const { userHandle, postId } = props;
+        // const { userHandle, postId } = props;
         const newPath = `/users/${userHandle}/post/${postId}`;
 
         if (oldPath === newPath) {
@@ -86,18 +81,26 @@ const PostDialog = props => {
         }
 
         window.history.pushState(null, null, newPath);
-
-        setOpen(true);
-        setNewPath(newPath);
-        setOldPath(oldPath);
-        props.getPost(props.postId);
+        return oldPath;
     };
+
+    const handleOpen = useCallback(() => {
+        setOpen(true);
+        setOldPath(changeWindowLocationPath(userHandle, postId));
+        getPost(postId);
+    }, [getPost, postId, userHandle]);
 
     const handleClose = () => {
         window.history.pushState(null, null, oldPath);
         setOpen(false);
         props.clearErrors();
     };
+
+    useEffect(() => {
+        if (props.openDialog) {
+            handleOpen();
+        }
+    }, [handleOpen, props.openDialog]);
 
     const dialogMarkup = loading ? (
         <div className={classes.spinnerDiv}>

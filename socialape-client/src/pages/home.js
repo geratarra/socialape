@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types'; 
 
 import Post from '../components/post/Post';
+import PostSkeleton from '../utils/PostSkeleton';
 import Profile from '../components/profile/Profile';
 
 import { connect } from 'react-redux';
@@ -20,7 +21,7 @@ const Home = (props) => {
         posts.map(post => { 
             return <Post key={post.postId} post={post}/>
         })
-    ) : <p>Loading...</p>;
+    ) : <PostSkeleton></PostSkeleton>;
 
     return (
         <Grid container spacing={10}>

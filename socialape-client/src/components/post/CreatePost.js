@@ -1,6 +1,6 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { useForm } from '../../utils/customHooks';
+// import { useForm } from '../../utils/customHooks';
 import TooltipButton from './TooltipButton';
 
 // MUI
@@ -35,7 +35,8 @@ const styles =theme => ({
 
 const CreatePost = props => {
     const [open, setOpen] = useState(false);
-    const { inputs, handleInputChange } = useForm();
+    const [bodyInput, setBodyInput] = useState('');
+    // const { inputs, handleInputChange } = useForm();
 
     const { classes, UI: { loading, errors } } = props;
 
@@ -43,21 +44,27 @@ const CreatePost = props => {
         setOpen(true);
     };
 
-    const handleClose = () => {
+    const { clearErrors } = props;
+    const handleClose = useCallback(() => {
+        setBodyInput('');
         setOpen(false);
-        props.clearErrors();
-    };
+        clearErrors();
+    }, [clearErrors]);
 
     const handleSubmit = () => {
-        props.createPost({ body: inputs.body });
+        props.createPost({ body: bodyInput });
+    };
+
+    const handleInputChange = (event) => {
+        setBodyInput(event.target.value);
     };
 
     useEffect(() => {
         if (!errors && !loading) {
             handleClose();
-            inputs.body = '';
+            setBodyInput('');
         }
-    }, [errors, loading]);
+    }, [errors, loading, handleClose]);
 
     return (
         <Fragment>
@@ -74,12 +81,12 @@ const CreatePost = props => {
                 <DialogContent>
                     <form noValidate>
                         <TextField
-                            name='body'
+                            name='bodyInput'
                             type='text'
                             label='Post'
                             multiline
                             rows='3'
-                            value={inputs.body}
+                            value={bodyInput}
                             placeholder='Create a post to your fellow apes'
                             error={errors?.body ? true : false}
                             helperText={errors?.body}
@@ -92,7 +99,7 @@ const CreatePost = props => {
                             variant='contained'
                             color='primary'
                             className={classes.submitButton}
-                            disabled={loading}
+                            disabled={loading || bodyInput === ''}
                         >
                             Submit
                             {loading && (<CircularProgress size={30} className={classes.progressSpinner} />)}

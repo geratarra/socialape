@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Post from '../components/post/Post';
 import StaticProfile from '../components/post/StaticProfile';
+import PostSkeleton from '../utils/PostSkeleton';
+import ProfileSkeleton from '../utils/ProfileSkeleton';
 
 // MUI
 import Grid from '@material-ui/core/Grid';
@@ -17,22 +19,23 @@ const User = (props) => {
     const [postId, setPostId] = useState(null);
     const { posts, loading } = props.data;
 
+    
+    const handle = props.match.params.handle;
+    const postIdParam = props.match.params.postId;
+    const getUserData = props.getUserData;
     useEffect(() => {
-        const handle = props.match.params.handle;
-        const postId = props.match.params.postId;
+        if (postIdParam) setPostId(postIdParam);
 
-        if (postId) setPostId(postId);
-
-        props.getUserData(handle);
+        getUserData(handle);
         axios.get(`/user/${handle}`)
             .then(res => {
                 setProfile(res.data.user);
             })
             .catch(err => console.error(err));
-    }, []);
+    }, [handle, postIdParam, getUserData]);
 
     const postsMarkup = loading ? (
-        <p>Loading data...</p>
+        <PostSkeleton></PostSkeleton>
     ) : posts === null ? (
         <p>No posts from this user</p>
     ) : !postId ? (
@@ -52,7 +55,7 @@ const User = (props) => {
             </Grid>
             <Grid item sm={4} xs={12}>
                 {profile === null ? (
-                    <p>Loading profile...</p>
+                    <ProfileSkeleton></ProfileSkeleton>
                 ) : (
                     <StaticProfile profile={profile}></StaticProfile>
                 )}
