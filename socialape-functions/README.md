@@ -9,7 +9,7 @@
   </a>
 </p>
 
-> Simple social network (somthing like Twitter) I created for practicing my skills with ReactJS.
+> Simple social network (somthing like Twitter) I created for practicing my skills with ReactJS (and a little bit of Firebase too).
 >
 > So, I'm still trying to improve my skills with ReactJS and now I decided to follow this https://www.youtube.com/watch?v=m_u6P5k0vP0 greate tutorial I found on `freecodecamp`.
 >
@@ -23,6 +23,8 @@
 > The app is not even close to be perfect. There are things that could be improved like the design (responsive) and the general functionality. Nevertheless, I didn't want to put a lot of effort on this because I want to keep practicing with ReactJS and the technlogies around it.
 
 ### 🏠 [Demo](http://geratarra.github.io/socialape)
+
+> Notice this repo contains both the client (`socialape-client`) and backend projects (`socialape-functions`). If you want to install, run or test the app make sure to run commands on the `socialape-client` folder.
 
 ## Install
 
