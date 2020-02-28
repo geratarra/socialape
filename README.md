@@ -48,7 +48,7 @@ npm run test
 
 👤 **Gerardo Tarragona Serna**
 
-* Website: geratarra.github.io
+* Website: https://geratarra.github.io
 * Twitter: [@geratarragona](https://twitter.com/geratarragona)
 * Github: [@geratarra](https://github.com/geratarra)
 * LinkedIn: [@gerardotarragona](https://linkedin.com/in/gerardotarragona)
