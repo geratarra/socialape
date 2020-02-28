@@ -1,68 +1,59 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h1 align="center">Welcome to socialape-client 👋</h1>
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-1-blue.svg?cacheSeconds=2592000" />
+  <a href="#" target="_blank">
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+  </a>
+  <a href="https://twitter.com/geratarragona" target="_blank">
+    <img alt="Twitter: geratarragona" src="https://img.shields.io/twitter/follow/geratarragona.svg?style=social" />
+  </a>
+</p>
 
-## Available Scripts
+> Simple social network (somthing like Twitter) I created for practicing my skills with ReactJS.
+>
+> So, I'm still trying to improve my skills with ReactJS and now I decided to follow this https://www.youtube.com/watch?v=m_u6P5k0vP0 greate tutorial I found on `freecodecamp`.
+>
+> Challenges:
+> - I decided to use `React hooks` instead of classes for creating the app. One of the challenges was try to implement the same logic using classes that is follow on the tutorial but using hooks. Of course I had to deal with useEffect, useCallback and useState hooks. Probably there are ways to improve the logic I used by using hooks, however, this is still kind of new for me but it was a great excercise to get started.
+> - `Serverless` with Firebase functions. I remember I played once with Firebase,  but this time it was a bigger excercise and I had never tasted the `serverless` approach. I have to say it seems very promsing.  Specially with all this boom about Azure, AWS, Google Cloud, etc.
+> - `Redux`. I have worked with Angular before. I took this course about the framework once and I remember one of the topic was `Redux`. Unfortunatelly, it was kind of hard for me to follow and understend the methodology. Specially, because it was not a simple ToDo app. The guy from the course took it to a more advance level.
+> This time I was able to understend better the benefits of state management on modern apps.
+> - `MaterialUI`. This wasn't exactly a challenge because I was following the tutorial. Regarding to this, I don't really have too much to say. I didn't love the library and I didn't hate it ethier. So, meh.
+>
+> The app is not even close to be perfect. There are things that could be improved like the design (responsive) and the general functionality. Nevertheless, I didn't want to put a lot of effort on this because I want to keep practicing with ReactJS and the technlogies around it.
 
-In the project directory, you can run:
+### 🏠 [Demo](http://geratarra.github.io/socialape)
 
-### `npm start`
+## Install
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```sh
+npm install
+```
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Usage
 
-### `npm test`
+```sh
+npm run start
+```
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Run tests
 
-### `npm run build`
+```sh
+npm run test
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Author
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+👤 **Gerardo Tarragona Serna**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* Website: geratarra.github.io
+* Twitter: [@geratarragona](https://twitter.com/geratarragona)
+* Github: [@geratarra](https://github.com/geratarra)
+* LinkedIn: [@gerardotarragona](https://linkedin.com/in/gerardotarragona)
 
-### `npm run eject`
+## Show your support
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Give a ⭐️ if this project helped you!
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+***
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
